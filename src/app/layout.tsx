@@ -18,8 +18,8 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={theme ? "light" : "dark"}>
-      <body>
-        <Navbar>
+      <body className="flex flex-col">
+        <Navbar maxWidth="full">
           <NavbarContent justify="end">
             <NavbarItem className="hidden lg:flex">
               <Link href="#">Login</Link>

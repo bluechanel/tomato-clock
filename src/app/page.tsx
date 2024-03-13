@@ -1,9 +1,10 @@
-import { Button } from '@nextui-org/button';
+'use client'
+import Timer from './timer/page';
 
 export default function Page() {
   return (
-    <div>
-      <Button>Click me</Button>
+    <div className='h-full flex justify-center items-center'>
+      <Timer />
     </div>
   )
 }
