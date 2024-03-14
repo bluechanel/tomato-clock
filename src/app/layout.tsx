@@ -4,6 +4,7 @@ import { Button, Link, Navbar, NavbarContent, NavbarItem } from "@nextui-org/rea
 import "./globals.css";
 import { Providers } from "./providers";
 import SwitchTheme from "@/components/SwitchTheme/page";
+import { Setting } from "@/components/Icon/Setting";
 import { useState } from "react";
 
 
@@ -21,16 +22,13 @@ export default function RootLayout({
       <body className="flex flex-col">
         <Navbar maxWidth="full">
           <NavbarContent justify="end">
-            <NavbarItem className="hidden lg:flex">
-              <Link href="#">Login</Link>
-            </NavbarItem>
             <NavbarItem>
-              <Button as={Link} color="primary" href="#" variant="flat">
-                Sign Up
+              <Button isIconOnly color="default" aria-label="Like">
+                <Setting />
               </Button>
             </NavbarItem>
             <NavbarItem>
-              <SwitchTheme isSelected={theme} onChange={() => { setTheme(theme ? false : true) }} />
+              <SwitchTheme isSelected={theme} onClick={() => { setTheme(theme ? false : true) }}/>
             </NavbarItem>
           </NavbarContent>
         </Navbar>
