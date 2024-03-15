@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
-import { CircularProgress, Card, CardBody, CardFooter, Chip, Button, ButtonGroup } from "@nextui-org/react";
+import { CircularProgress, Card, CardBody, CardFooter, Button } from "@nextui-org/react";
 import "../globals.css";
 import { Countdown } from "@/components/CountDown/page";
 
@@ -32,7 +32,7 @@ export default function Timer() {
     }
 
     return (
-        <Card className="h-2/4 w-1/4 border-none bg-gradient-to-br from-cyan-500 to-blue-500">
+        <Card className="h-2/4 w-1/4 border-none bg-gradient-to-br bg-blue-500">
             <CardBody className="w-full h-full justify-center items-center pb-0">
                 <CircularProgress
                     classNames={{
@@ -48,10 +48,10 @@ export default function Timer() {
                 />
             </CardBody>
             <CardFooter className="justify-center items-center flex flex-col gap-4">
-                <Button radius="full" color="default" onClick={start}>
+                <Button radius="full" color="primary" onClick={start}>
                     Start
                 </Button>
-                <Button radius="full" color="default" onClick={stop}>
+                <Button radius="full" color="primary" onClick={stop}>
                     Stop
                 </Button>
             </CardFooter>
