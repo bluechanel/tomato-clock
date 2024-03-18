@@ -1,6 +1,6 @@
 'use client'
 import { useState } from "react";
-import { Card, CardBody, CardFooter, Button } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import "../globals.css";
 import dynamic from "next/dynamic";
 import { Countdown, TimeProgress } from "@/components/CountDown/countdown";
@@ -70,10 +70,10 @@ export default function Timer() {
         <div className="flex flex-col">
             <TinyRing {...config} />
             <div className="justify-center items-center flex flex-col gap-4">
-                <Button radius="full" color="primary" onClick={start}>
+                <Button radius="full" color="primary" onClick={start} className="w-1/4">
                     Start
                 </Button>
-                <Button radius="full" color="primary" onClick={stop}>
+                <Button radius="full" color="primary" onClick={stop} className="w-1/4">
                     Stop
                 </Button>
             </div>
