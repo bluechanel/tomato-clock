@@ -7,7 +7,21 @@ import { settingItems } from "./items";
 
 
 export default function Settings() {
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+
+    const updateValue = new Map();
+
+
+    const changeValue = (key: string, value: string) => {
+        updateValue.set(key, value);
+    }
+
+    const save = () => {
+        updateValue.forEach((value, key) => {
+            localStorage.setItem(key, value);
+        })
+        onClose();
+    }
 
     return (
         <><Button isIconOnly color="default" aria-label="Like" onClick={onOpen}>
@@ -24,7 +38,9 @@ export default function Settings() {
                                         key={item.name}
                                         type={item.type}
                                         label={item.label}
-                                        value={item.defaultValue as unknown as string}
+                                        value={item.value as unknown as string}
+                                        defaultValue={item.defaultValue as unknown as string}
+                                        onChange={(event) => { changeValue(item.name, event.target.value) }}
                                     />
                                 ))}
                             </ModalBody>
@@ -32,7 +48,7 @@ export default function Settings() {
                                 <Button color="danger" variant="light" onPress={onClose}>
                                     Cancel
                                 </Button>
-                                <Button color="primary" onPress={onClose}>
+                                <Button color="primary" onPress={save}>
                                     Save
                                 </Button>
                             </ModalFooter>
