@@ -5,18 +5,16 @@ export interface TimeProgress {
 
 
 export class Countdown {
-    private remainingTime: number;
     private startTime: Date | undefined;
     private endTime: Date | undefined;
 
-    constructor(private duration: number, private onUpdate: (timeDiff: TimeProgress) => void, private onComplete: () => void) {
-        this.remainingTime = duration;
+    constructor(private onUpdate: (timeDiff: TimeProgress) => void, private onComplete: () => void) {
     }
 
-    start() {
+    start(remainingTime: number) {
         this.endTime = new Date();
         this.startTime = new Date();
-        this.endTime.setMinutes(this.endTime.getMinutes() + this.remainingTime);
+        this.endTime.setMinutes(this.endTime.getMinutes() + remainingTime);
         const countdownTimerId = setInterval(() => {
             if (this.endTime == undefined || this.startTime == undefined) {
                 clearInterval(countdownTimerId)

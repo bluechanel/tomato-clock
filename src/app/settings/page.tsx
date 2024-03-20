@@ -3,7 +3,7 @@
 import { Button, Modal, useDisclosure, ModalContent, ModalHeader, ModalBody, ModalFooter, Input } from "@nextui-org/react";
 import "../globals.css";
 import { Setting } from "@/components/Icon/Setting";
-import { settingItems } from "./items";
+import { setting } from "@/components/Settings/settings";
 
 
 export default function Settings() {
@@ -16,9 +16,11 @@ export default function Settings() {
         updateValue.set(key, value);
     }
 
+    const settingItems = setting.allItem();
+
     const save = () => {
         updateValue.forEach((value, key) => {
-            localStorage.setItem(key, value);
+            setting.setItems(key, value);
         })
         onClose();
     }
@@ -38,8 +40,7 @@ export default function Settings() {
                                         key={item.name}
                                         type={item.type}
                                         label={item.label}
-                                        value={item.value as unknown as string}
-                                        defaultValue={item.defaultValue as unknown as string}
+                                        defaultValue={item.value as unknown as string}
                                         onChange={(event) => { changeValue(item.name, event.target.value) }}
                                     />
                                 ))}

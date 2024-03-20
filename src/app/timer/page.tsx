@@ -4,17 +4,18 @@ import { Button } from "@nextui-org/react";
 import "../globals.css";
 import dynamic from "next/dynamic";
 import { Countdown, TimeProgress } from "@/components/CountDown/countdown";
+import { setting } from "@/components/Settings/settings";
 // @ts-ignore
 const TinyRing = dynamic(() => import('@ant-design/plots').then(({ Tiny }) => Tiny.Ring), { ssr: false })
 
 export default function Timer() {
 
+    const initTimeProgress = { timeLeft: Number(setting.getItem("focus")) * 60 * 1000, percent: 1 }
 
-    const [value, setValue] = useState<TimeProgress>({ timeLeft: 0, percent: 0 });
+    const [value, setValue] = useState<TimeProgress>(initTimeProgress);
     const [timerId, setTimerId] = useState<NodeJS.Timeout | undefined>(undefined);
 
-    const countdown = new Countdown(1, (timeDiff) => {
-        console.log(timeDiff);
+    const countdown = new Countdown((timeDiff) => {
         setValue(timeDiff);
     }, () => {
         console.log('Countdown completed!');
@@ -22,7 +23,7 @@ export default function Timer() {
 
 
     const start = async () => {
-        const intervalId = countdown.start();
+        const intervalId = countdown.start(Number(setting.getItem("focus")));
         setTimerId(() => { return intervalId });
     };
 
