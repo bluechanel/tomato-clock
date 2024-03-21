@@ -34,6 +34,14 @@ export class Countdown {
         return countdownTimerId;
     }
 
+    update(time: number) {
+        if (this.endTime == undefined) {
+            throw Error("Not startted")
+        } else {
+            this.endTime.setMinutes(this.endTime.getMinutes() + time);
+        }
+    }
+
     stop(id: NodeJS.Timeout) {
         clearInterval(id);
     }

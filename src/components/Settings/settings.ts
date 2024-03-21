@@ -1,3 +1,4 @@
+'use client'
 interface SettingItem {
     name: string;
     label: string;
@@ -14,16 +15,20 @@ class Settings {
         { name: "longBreak", label: "Long Break", type: "number", defaultValue: 15 }]
 
     getItem(settingName: string): string {
-        const itemValue = global.localStorage.getItem(settingName)
-        if (itemValue == null) {
-            const v = this.items.find(item => item.name == settingName)
-            if (v == undefined) {
-                throw new Error(`haven't ${settingName} value `)
-            }
-            return v.defaultValue.toString()
+        let v = this.items.find(item => item.name == settingName)
+        if (v == undefined) {
+            throw new Error(`Not found ${settingName} value `)
         } else {
-            return itemValue;
+            if (typeof window !== 'undefined' && window.localStorage) {
+                const t = localStorage.getItem(settingName);
+                if (t == null) {
+                    return v.defaultValue.toString();
+                } else {
+                    return t;
+                }
+            }
         }
+        return v.defaultValue.toString();
     }
 
     setItems(settingName: string, value: any): void {

@@ -8,10 +8,32 @@ import { setting } from "@/components/Settings/settings";
 // @ts-ignore
 const TinyRing = dynamic(() => import('@ant-design/plots').then(({ Tiny }) => Tiny.Ring), { ssr: false })
 
+
+
+function TimerButton({ state, startFunc, stopFunc, extendFunc }: { state: string, startFunc: () => void, stopFunc: () => void, extendFunc: () => void }) {
+    if (state == "init") {
+        return <Button color="primary" radius="full" className="w-1/4" onClick={startFunc}>
+            Start
+        </Button>
+    } else if (state == "starting") {
+        return <><Button color="primary" radius="full" className="w-1/4" onClick={extendFunc}>
+            Extend(5 min)
+        </Button><Button color="primary" radius="full" className="w-1/4" onClick={stopFunc}>
+                End Focus
+            </Button>
+        </>
+    } else {
+        return <Button color="primary" radius="full" className="w-1/4" onClick={startFunc}>
+            Start
+        </Button>
+    }
+};
+
 export default function Timer() {
 
     const initTimeProgress = { timeLeft: Number(setting.getItem("focus")) * 60 * 1000, percent: 1 }
 
+    const [state, setState] = useState<string>("init");
     const [value, setValue] = useState<TimeProgress>(initTimeProgress);
     const [timerId, setTimerId] = useState<NodeJS.Timeout | undefined>(undefined);
 
@@ -22,16 +44,28 @@ export default function Timer() {
     });
 
 
-    const start = async () => {
-        const intervalId = countdown.start(Number(setting.getItem("focus")));
-        setTimerId(() => { return intervalId });
+    const start = () => {
+        try {
+            const intervalId = countdown.start(Number(setting.getItem("focus")));
+            console.log(countdown);
+            setTimerId(() => { return intervalId });
+            setState("starting");
+        } catch (error) {
+            console.log("Failed to start countdown");
+        }
+
     };
 
-    const stop = async () => {
+    const extend = () => {
+        console.log("Extend is not");
+    }
+
+    const stop = () => {
         if (timerId == undefined) {
-            console.log("没有定时器id");
+            console.log("Not interval id");
         } else {
             countdown.stop(timerId);
+            setState("init");
         }
     }
 
@@ -71,12 +105,12 @@ export default function Timer() {
         <div className="flex flex-col">
             <TinyRing {...config} />
             <div className="justify-center items-center flex flex-col gap-4">
-                <Button radius="full" color="primary" onClick={start} className="w-1/4">
-                    Start
-                </Button>
-                <Button radius="full" color="primary" onClick={stop} className="w-1/4">
-                    Stop
-                </Button>
+                <TimerButton
+                    state={state}
+                    startFunc={start}
+                    stopFunc={stop}
+                    extendFunc={extend}
+                />
             </div>
         </div>
     );
