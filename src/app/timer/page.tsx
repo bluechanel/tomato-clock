@@ -40,7 +40,11 @@ export default function Timer() {
     const countdown = new Countdown((timeDiff) => {
         setValue(timeDiff);
     }, () => {
-        console.log('Countdown completed!');
+        new Notification(
+            "Focus stopped", {
+            body: "Focus stopped"
+        }
+        )
     });
 
 
