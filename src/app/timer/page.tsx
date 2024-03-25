@@ -16,12 +16,15 @@ function TimerButton({ state, startFunc, stopFunc, extendFunc }: { state: string
             Start
         </Button>
     } else if (state == "starting") {
-        return <><Button color="primary" radius="full" className="w-1/4" onClick={extendFunc}>
-            Extend(5 min)
-        </Button><Button color="primary" radius="full" className="w-1/4" onClick={stopFunc}>
-                End Focus
-            </Button>
-        </>
+        // return <><Button color="primary" radius="full" className="w-1/4" onClick={extendFunc}>
+        //     Extend(5 min)
+        // </Button><Button color="primary" radius="full" className="w-1/4" onClick={stopFunc}>
+        //         End Focus
+        //     </Button>
+        // </>
+        return <Button color="primary" radius="full" className="w-1/4" onClick={stopFunc}>
+            End Focus
+        </Button>
     } else {
         return <Button color="primary" radius="full" className="w-1/4" onClick={startFunc}>
             Start
