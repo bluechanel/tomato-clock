@@ -1,3 +1,5 @@
+import { clearInterval, setInterval } from 'worker-timers';
+
 export interface TimeProgress {
     timeLeft: number;
     percent: number;
@@ -21,13 +23,12 @@ export class Countdown {
             } else {
                 const now = new Date();
                 const left = this.endTime.getTime() - now.getTime();
-
+                let tp: TimeProgress = { timeLeft: left, percent: left / (this.endTime.getTime() - this.startTime.getTime()) }
                 if (left <= 0) {
                     clearInterval(countdownTimerId);
                     this.onComplete();
+                    tp = { timeLeft: 0, percent: 0 }
                 }
-
-                const tp: TimeProgress = { timeLeft: left, percent: left / (this.endTime.getTime() - this.startTime.getTime()) }
                 this.onUpdate(tp);
             }
         }, 1000);
@@ -42,7 +43,7 @@ export class Countdown {
         }
     }
 
-    stop(id: NodeJS.Timeout) {
+    stop(id: number) {
         clearInterval(id);
     }
 }

@@ -5,6 +5,7 @@ import "../globals.css";
 import dynamic from "next/dynamic";
 import { Countdown, TimeProgress } from "@/components/CountDown/countdown";
 import { setting } from "@/components/Settings/settings";
+import { time } from "console";
 // @ts-ignore
 const TinyRing = dynamic(() => import('@ant-design/plots').then(({ Tiny }) => Tiny.Ring), { ssr: false })
 
@@ -38,9 +39,10 @@ export default function Timer() {
 
     const [state, setState] = useState<string>("init");
     const [value, setValue] = useState<TimeProgress>(initTimeProgress);
-    const [timerId, setTimerId] = useState<NodeJS.Timeout | undefined>(undefined);
+    const [timerId, setTimerId] = useState<number | undefined>(undefined);
 
     const countdown = new Countdown((timeDiff) => {
+        console.log(timeDiff);
         setValue(timeDiff);
     }, () => {
         new Notification(
@@ -54,7 +56,6 @@ export default function Timer() {
     const start = () => {
         try {
             const intervalId = countdown.start(Number(setting.getItem("focus")));
-            console.log(countdown);
             setTimerId(() => { return intervalId });
             setState("starting");
         } catch (error) {
