@@ -34,16 +34,4 @@ export class Countdown {
         }, 1000);
         return countdownTimerId;
     }
-
-    update(time: number) {
-        if (this.endTime == undefined) {
-            throw Error("Not startted")
-        } else {
-            this.endTime.setMinutes(this.endTime.getMinutes() + time);
-        }
-    }
-
-    stop(id: number) {
-        clearInterval(id);
-    }
 }
