@@ -132,7 +132,7 @@ export default function Timer() {
             } else {
                 startBreakTimer();
             }
-        } else if (fs.at(-1) == "break") {
+        } else if (fs.at(-1) == "break" || fs.at(-1) == "longBreak") {
             startFocusTimer();
         } else {
             console.log("init");
