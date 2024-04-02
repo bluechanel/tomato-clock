@@ -4,8 +4,8 @@ import { useImmer } from 'use-immer';
 import { Button, Card, CardBody, CardFooter } from "@nextui-org/react";
 import { clearInterval } from 'worker-timers';
 import "../globals.css";
-import { Countdown, TimeProgress } from "@/components/CountDown/countdown";
-import { setting } from "@/components/Settings/settings";
+import { Countdown, TimeProgress } from "@/components/countdown/countdown";
+import { setting } from "@/components/settings/settings";
 import CircleRingWithContent from "@/components/ring/ring";
 
 
@@ -132,8 +132,8 @@ export default function Timer() {
         const formattedMinutes: string = minutes.toString().padStart(2, '0');
         const formattedSeconds: string = seconds.toString().padStart(2, '0');
         return <>
-            <p className="text-6xl font-medium">{formattedHours}:{formattedMinutes}:{formattedSeconds}</p>
-            <p className="text-2xl">{state}</p>
+            <p className="text-6xl font-semibold">{formattedHours}:{formattedMinutes}:{formattedSeconds}</p>
+            <p className="text-2xl text-gray-500">{state}</p>
         </>
     }
 

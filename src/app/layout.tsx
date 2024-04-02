@@ -3,9 +3,9 @@
 import { Navbar, NavbarContent, NavbarItem } from "@nextui-org/react";
 import "./globals.css";
 import { Providers } from "./providers";
-import SwitchTheme from "@/components/SwitchTheme/page";
 import { useState } from "react";
 import Settings from "./settings/page";
+import SwitchTheme from "@/components/switch-theme/page";
 
 
 

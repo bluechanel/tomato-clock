@@ -2,8 +2,8 @@
 
 import { Button, Modal, useDisclosure, ModalContent, ModalHeader, ModalBody, ModalFooter, Input } from "@nextui-org/react";
 import "../globals.css";
-import { Setting } from "@/components/Icon/Setting";
-import { setting } from "@/components/Settings/settings";
+import { Setting } from "@/components/icon/Setting";
+import { setting } from "@/components/settings/settings";
 
 
 export default function Settings() {
