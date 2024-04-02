@@ -48,9 +48,9 @@ function Format({ value }: { value: TimeProgress }) {
 
 export default function Timer() {
 
-    const initTimeProgress = { timeLeft: Number(setting.getItem("focus")) * 60 * 1000, percent: 0.5 }
+    const initTimeProgress = { timeLeft: Number(setting.getItem("focus")) * 60 * 1000, percent: 1 }
 
-    const [state, setState] = useState<string>("1212");
+    const [state, setState] = useState<string>("");
     const [value, setValue] = useState<TimeProgress>(initTimeProgress);
     const [timerId, setTimerId] = useState<number | undefined>(undefined);
     const [focusList, updateFocusLsit] = useImmer<string[]>([]);
