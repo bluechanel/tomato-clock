@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ant-design/charts": "^2.0.3",
     "@nextui-org/react": "^2.2.10",
     "framer-motion": "^11.0.8",
     "immer": "^10.0.4",

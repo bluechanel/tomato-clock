@@ -1,14 +1,12 @@
 'use client'
 import { useEffect, useState } from "react";
 import { useImmer } from 'use-immer';
-import { Button } from "@nextui-org/react";
+import { Button, Card, CardBody, CardFooter } from "@nextui-org/react";
 import { clearInterval } from 'worker-timers';
 import "../globals.css";
-import dynamic from "next/dynamic";
 import { Countdown, TimeProgress } from "@/components/CountDown/countdown";
 import { setting } from "@/components/Settings/settings";
-// @ts-ignore
-const TinyRing = dynamic(() => import('@ant-design/plots').then(({ Tiny }) => Tiny.Ring), { ssr: false })
+import CircleRingWithContent from "@/components/ring/ring";
 
 
 
@@ -34,11 +32,25 @@ function TimerButton({ state, startFunc, stopFunc, extendFunc }: { state: string
     }
 };
 
+
+function Format({ value }: { value: TimeProgress }) {
+    let hours = Math.floor(value.timeLeft / (1000 * 60 * 60));
+    let minutes = Math.floor((value.timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    let seconds = Math.floor((value.timeLeft % (1000 * 60)) / 1000);
+
+    const formattedHours: string = hours.toString().padStart(2, '0');
+    const formattedMinutes: string = minutes.toString().padStart(2, '0');
+    const formattedSeconds: string = seconds.toString().padStart(2, '0');
+    return <>
+        <p>{formattedHours}:{formattedMinutes}:{formattedSeconds}</p>
+    </>
+}
+
 export default function Timer() {
 
-    const initTimeProgress = { timeLeft: Number(setting.getItem("focus")) * 60 * 1000, percent: 1 }
+    const initTimeProgress = { timeLeft: Number(setting.getItem("focus")) * 60 * 1000, percent: 0.5 }
 
-    const [state, setState] = useState<string>("");
+    const [state, setState] = useState<string>("1212");
     const [value, setValue] = useState<TimeProgress>(initTimeProgress);
     const [timerId, setTimerId] = useState<number | undefined>(undefined);
     const [focusList, updateFocusLsit] = useImmer<string[]>([]);
@@ -110,18 +122,20 @@ export default function Timer() {
         }
     }
 
-    const format = (tp: TimeProgress) => {
-        let hours = Math.floor(tp.timeLeft / (1000 * 60 * 60));
-        let minutes = Math.floor((tp.timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-        let seconds = Math.floor((tp.timeLeft % (1000 * 60)) / 1000);
+
+    const format = (value: TimeProgress, state: string) => {
+        let hours = Math.floor(value.timeLeft / (1000 * 60 * 60));
+        let minutes = Math.floor((value.timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((value.timeLeft % (1000 * 60)) / 1000);
 
         const formattedHours: string = hours.toString().padStart(2, '0');
         const formattedMinutes: string = minutes.toString().padStart(2, '0');
         const formattedSeconds: string = seconds.toString().padStart(2, '0');
-
-        return `${formattedHours}:${formattedMinutes}:${formattedSeconds}\n${state}`;
+        return <>
+            <p className="text-6xl font-medium">{formattedHours}:{formattedMinutes}:{formattedSeconds}</p>
+            <p className="text-2xl">{state}</p>
+        </>
     }
-
 
     useEffect(() => {
         const fs = focusList.slice(-5);
@@ -141,36 +155,32 @@ export default function Timer() {
     }, [focusList])
 
     const config = {
-        percent: value.percent,
-        color: ['#E8EFF5', '#1677ff'],
-        animate: false,
-        annotations: [
-            {
-                type: 'text',
-                radius: 0.9,
-                style: {
-                    text: format(value),
-                    x: '50%',
-                    y: '50%',
-                    textAlign: 'center',
-                    fontSize: 50,
-                    fontStyle: 'bold',
-                },
-            },
-        ],
+        size: 400,
+        contentSize: 300,
+        backgroundColor: "#DDD",
+        ringColor: "#0070F0",
+        ringWidth: 15,
+        progress: value.percent,
+        content: format(value, state),
     };
 
     return (
         <div className="flex flex-col">
-            <TinyRing {...config} />
-            <div className="justify-center items-center flex flex-col gap-4">
-                <TimerButton
-                    state={state}
-                    startFunc={startFocusTimer}
-                    stopFunc={stop}
-                    extendFunc={extend}
-                />
-            </div>
+            <Card >
+                <CardBody>
+                    <CircleRingWithContent {...config} />
+                </CardBody>
+                <CardFooter className="flex flex-col items-center">
+                    <div className="justify-center items-center flex flex-col gap-4">
+                        <TimerButton
+                            state={state}
+                            startFunc={startFocusTimer}
+                            stopFunc={stop}
+                            extendFunc={extend}
+                        />
+                    </div>
+                </CardFooter>
+            </Card>
         </div>
     );
 }
