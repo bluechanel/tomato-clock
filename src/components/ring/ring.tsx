@@ -41,7 +41,7 @@ const CircleRingWithContent: FC<CircleRingWithContentProps> = ({
     content = <></>
 }: CircleRingWithContentProps) => {
     const ringRadius = (size - ringWidth) / 2;
-    const circumference = 2 * Math.PI * (ringRadius + ringWidth / 2); // 计算圆周长
+    const circumference = 2 * Math.PI * ringRadius; // 计算圆周长
 
     const transform = `rotate(-90 ${size / 2} ${size / 2})`;
     const storkeArray = `${circumference * progress}, ${circumference}`;
