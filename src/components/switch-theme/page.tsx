@@ -1,8 +1,8 @@
 'use client'
 import React from "react";
 import { Button } from "@nextui-org/react";
-import { MoonIcon } from "../icon/MoonIcon";
-import { SunIcon } from "../icon/SunIcon";
+import { MoonIcon } from "../icon/moon-icon";
+import { SunIcon } from "../icon/sun-icon";
 
 const SwitchTheme = ({ isSelected, onClick }: { isSelected: boolean, onClick: () => void }) => {
 
