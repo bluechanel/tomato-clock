@@ -1,6 +1,7 @@
 'use client'
 
 import { Navbar, NavbarContent, NavbarItem } from "@nextui-org/react";
+import { GoogleAnalytics } from '@next/third-parties/google'
 import "./globals.css";
 import { Providers } from "./providers";
 import { useState } from "react";
@@ -19,19 +20,6 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={theme ? "light" : "dark"}>
-      <head>
-        {/* Google tag (gtag.js) */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-ER2VE60WFT"></script>
-        <script dangerouslySetInnerHTML={{
-          __html: `
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', 'G-ER2VE60WFT');`
-        }}>
-        </script>
-      </head>
       <body className="flex flex-col">
         <Navbar maxWidth="full">
           <NavbarContent justify="end">
@@ -47,6 +35,7 @@ export default function RootLayout({
           {children}
         </Providers>
       </body>
+      <GoogleAnalytics gaId="G-ER2VE60WFT" />
     </html>
   );
 }
