@@ -32,20 +32,6 @@ function TimerButton({ state, startFunc, stopFunc, extendFunc }: { state: string
     }
 };
 
-
-function Format({ value }: { value: TimeProgress }) {
-    let hours = Math.floor(value.timeLeft / (1000 * 60 * 60));
-    let minutes = Math.floor((value.timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-    let seconds = Math.floor((value.timeLeft % (1000 * 60)) / 1000);
-
-    const formattedHours: string = hours.toString().padStart(2, '0');
-    const formattedMinutes: string = minutes.toString().padStart(2, '0');
-    const formattedSeconds: string = seconds.toString().padStart(2, '0');
-    return <>
-        <p>{formattedHours}:{formattedMinutes}:{formattedSeconds}</p>
-    </>
-}
-
 export default function Timer() {
 
     const initTimeProgress = { timeLeft: Number(setting.getItem("focus")) * 60 * 1000, percent: 1 }
