@@ -1,13 +1,33 @@
-'use client'
-
-import { Navbar, NavbarContent, NavbarItem } from "@nextui-org/react";
 import { GoogleAnalytics } from '@next/third-parties/google'
+import { Metadata, Viewport } from "next";
+import clsx from "clsx";
 import "./globals.css";
 import { Providers } from "./providers";
-import { useState } from "react";
-import Settings from "./settings/page";
-import SwitchTheme from "@/components/switch-theme/page";
+import { siteConfig } from "@/config/site";
+import { Navbar } from '@/components/navbar';
 
+
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+}
+
+
+export const metadata: Metadata = {
+  title: {
+    default: siteConfig.name,
+    template: `%s - ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-16x16.png",
+    apple: "/apple-touch-icon.png",
+  },
+};
 
 
 export default function RootLayout({
@@ -15,24 +35,22 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-  const [theme, setTheme] = useState(true);
-
   return (
-    <html lang="en" className={theme ? "light" : "dark"}>
-      <body className="flex flex-col">
-        <Navbar maxWidth="full">
-          <NavbarContent justify="end">
-            <NavbarItem>
-              <Settings />
-            </NavbarItem>
-            <NavbarItem>
-              <SwitchTheme isSelected={theme} onClick={() => { setTheme(theme ? false : true) }} />
-            </NavbarItem>
-          </NavbarContent>
-        </Navbar>
-        <Providers>
-          {children}
+    <html lang="en" suppressHydrationWarning>
+      <head>
+      </head>
+      <body
+        className={clsx(
+          "min-h-screen bg-background font-sans antialiased",
+        )}
+      >
+        <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
+          <main className="flex flex-col h-screen items-center">
+            <Navbar />
+            <div className="flex-1 w-full h-screen overflow-hidden">
+              {children}
+            </div>
+          </main>
         </Providers>
       </body>
       <GoogleAnalytics gaId="G-ER2VE60WFT" />

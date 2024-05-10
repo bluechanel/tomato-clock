@@ -2,8 +2,8 @@
 
 import { Button, Modal, useDisclosure, ModalContent, ModalHeader, ModalBody, ModalFooter, Input } from "@nextui-org/react";
 import "../globals.css";
-import { Setting } from "@/components/icon/setting";
 import { setting } from "@/components/settings/settings";
+import { SettingIcon } from "@/components/icons";
 
 
 export default function Settings() {
@@ -26,9 +26,9 @@ export default function Settings() {
     }
 
     return (
-        <><Button isIconOnly color="default" aria-label="Like" onClick={onOpen}>
-            <Setting />
-        </Button>
+        <><div onClick={onOpen}>
+            <SettingIcon className="text-default-500" />
+        </div>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     {(onClose) => (
