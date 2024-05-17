@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useImmer } from 'use-immer';
 import { Button, Card, CardBody, CardFooter } from "@nextui-org/react";
 import { clearInterval } from 'worker-timers';
@@ -11,7 +11,7 @@ import { showNotification } from "@/utils/notification";
 
 
 // 计时器类型
-export enum TimerState {
+enum TimerState {
     Focusing = "focus",
     Breaking = "break",
     LongBreaking = "longBreak",
