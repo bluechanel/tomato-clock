@@ -1,7 +1,7 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-	name: "simple tomato clock",
+	name: "Simple Tomato Clock",
 	description: "Provides a simple online tomato clock with reminders",
 	navItems: [
 	],

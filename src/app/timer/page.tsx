@@ -7,6 +7,7 @@ import "../globals.css";
 import { Countdown, TimeProgress } from "@/components/countdown/countdown";
 import { setting } from "@/components/settings/settings";
 import CircleRingWithContent from "@/components/ring/ring";
+import { showNotification } from "@/utils/notification";
 
 
 
@@ -43,14 +44,11 @@ export default function Timer() {
 
 
     const startFocusTimer = () => {
+        showNotification("test");
         const countdown = new Countdown((timeDiff) => {
             setValue(timeDiff);
         }, () => {
-            new Notification(
-                "Focus stopped", {
-                body: "Focus stopped"
-            }
-            )
+            showNotification("Focus stopped");
             updateFocusLsit(draft => { draft.push("focus") });
             setState("stopped");
         });
@@ -63,11 +61,7 @@ export default function Timer() {
         const countdown = new Countdown((timeDiff) => {
             setValue(timeDiff);
         }, () => {
-            new Notification(
-                "Break stopped", {
-                body: "Break stopped"
-            }
-            )
+            showNotification("Break stopped");
             updateFocusLsit(draft => { draft.push("break") });
             setState("stopped");
         });
@@ -81,11 +75,7 @@ export default function Timer() {
         const countdown = new Countdown((timeDiff) => {
             setValue(timeDiff);
         }, () => {
-            new Notification(
-                "Break stopped", {
-                body: "Break stopped"
-            }
-            )
+            showNotification("Break stopped");
             updateFocusLsit(draft => { draft.push("longBreak") });
             setState("stopped");
         });
