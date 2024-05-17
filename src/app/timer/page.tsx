@@ -44,11 +44,13 @@ export default function Timer() {
 
 
     const startFocusTimer = () => {
-        showNotification("test");
         const countdown = new Countdown((timeDiff) => {
             setValue(timeDiff);
         }, () => {
-            showNotification("Focus stopped");
+            const tip = showNotification("Focus stopped");
+            tip.onclick = () => {
+                window.focus();
+            }
             updateFocusLsit(draft => { draft.push("focus") });
             setState("stopped");
         });
@@ -61,7 +63,10 @@ export default function Timer() {
         const countdown = new Countdown((timeDiff) => {
             setValue(timeDiff);
         }, () => {
-            showNotification("Break stopped");
+            const tip = showNotification("Break stopped");
+            tip.onclick = () => {
+                window.focus();
+            }
             updateFocusLsit(draft => { draft.push("break") });
             setState("stopped");
         });
@@ -75,7 +80,10 @@ export default function Timer() {
         const countdown = new Countdown((timeDiff) => {
             setValue(timeDiff);
         }, () => {
-            showNotification("Break stopped");
+            const tip = showNotification("Break stopped");
+            tip.onclick = () => {
+                window.focus();
+            }
             updateFocusLsit(draft => { draft.push("longBreak") });
             setState("stopped");
         });
