@@ -18,6 +18,11 @@ enum TimerState {
     Stop = "stop"
 }
 
+enum RingColor {
+    Blue = "#0070F0",
+    Red = "#F31260"
+}
+
 
 function TimerButton({ state, startFunc, stopFunc, extendFunc }: { state: TimerState, startFunc: () => void, stopFunc: () => void, extendFunc: () => void }) {
     if (state == TimerState.Stop) {
@@ -49,6 +54,7 @@ export default function Timer() {
     const [value, setValue] = useState<TimeProgress>(initTimeProgress);
     const [timerId, setTimerId] = useState<number | undefined>(undefined);
     const [focusList, updateFocusLsit] = useImmer<TimerState[]>([]);
+    const [ringColor, setRingColor] = useImmer<RingColor>(RingColor.Blue);
 
 
     const selectTimerType = (): TimerState => {
@@ -67,16 +73,22 @@ export default function Timer() {
 
 
     const startTimer = () => {
+        setRingColor(RingColor.Blue);
         const timerType = selectTimerType();
+        let is_tip = true;
         const countdown = new Countdown((timeDiff) => {
             setValue(timeDiff);
         }, () => {
-            const tip = showNotification(`${timerType} stopped`);
-            tip.onclick = () => {
-                window.focus();
+            if (is_tip) {
+                const tip = showNotification(`${timerType} stopped`);
+                tip.onclick = () => {
+                    window.focus();
+                }
+                updateFocusLsit(draft => { draft.push(timerType) });
+                setRingColor(RingColor.Red);
             }
-            updateFocusLsit(draft => { draft.push(timerType) });
-            setState(TimerState.Stop);
+            is_tip = false;
+
         });
         const intervalId = countdown.start(Number(setting.getItem(timerType)));
         setTimerId(() => { return intervalId });
@@ -117,7 +129,7 @@ export default function Timer() {
         size: 400,
         contentSize: 300,
         backgroundColor: "#DDD",
-        ringColor: "#0070F0",
+        ringColor: ringColor,
         ringWidth: 15,
         progress: value.percent,
         content: format(value, state),

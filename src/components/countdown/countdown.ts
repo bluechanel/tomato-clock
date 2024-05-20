@@ -24,10 +24,11 @@ export class Countdown {
                 const now = new Date();
                 const left = this.endTime.getTime() - now.getTime();
                 let tp: TimeProgress = { timeLeft: left, percent: left / (this.endTime.getTime() - this.startTime.getTime()) }
-                if (left <= 0) {
-                    clearInterval(countdownTimerId);
+                if (left < 0) {
+                    // 结束
                     this.onComplete();
-                    tp = { timeLeft: 0, percent: 0 }
+                    // 计算超时
+                    tp = { timeLeft: now.getTime() - this.startTime.getTime(), percent: 1 }
                 }
                 this.onUpdate(tp);
             }
