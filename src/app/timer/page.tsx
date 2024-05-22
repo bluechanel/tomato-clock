@@ -15,32 +15,32 @@ enum TimerState {
     Focusing = "focus",
     Breaking = "break",
     LongBreaking = "longBreak",
-    Stop = "stop"
-}
-
-enum RingColor {
-    Blue = "#0070F0",
-    Red = "#F31260"
+    Stop = "stop",
+    Timeout = "timeout"
 }
 
 
-function TimerButton({ state, startFunc, stopFunc, extendFunc }: { state: TimerState, startFunc: () => void, stopFunc: () => void, extendFunc: () => void }) {
+
+function TimerButton({ state, startFunc, stopFunc }: { state: TimerState, startFunc: () => void, stopFunc: () => void }) {
     if (state == TimerState.Stop) {
-        return <Button color="primary" radius="full" className="w-1/4" onClick={startFunc}>
+        return <Button color="primary" radius="full" onClick={startFunc}>
             Start
         </Button>
-    } else if (state == TimerState.Focusing || state == TimerState.Breaking || state == TimerState.LongBreaking) {
-        // return <><Button color="primary" radius="full" className="w-1/4" onClick={extendFunc}>
-        //     Extend(5 min)
-        // </Button><Button color="primary" radius="full" className="w-1/4" onClick={stopFunc}>
-        //         End Focus
-        //     </Button>
-        // </>
-        return <Button color="primary" radius="full" className="w-1/4" onClick={stopFunc}>
-            End Focus
+    } else if (state == TimerState.Focusing) {
+        return <Button color="primary" radius="full" onClick={stopFunc}>
+            End Focusing
         </Button>
-    } else {
-        return <Button color="primary" radius="full" className="w-1/4" onClick={startFunc}>
+    } else if (state == TimerState.Breaking || state == TimerState.LongBreaking) {
+        return <Button color="success" radius="full" onClick={stopFunc}>
+            End Breaking
+        </Button>
+    } else if (state == TimerState.Timeout) {
+        return <Button color="warning" radius="full" onClick={stopFunc}>
+            End
+        </Button>
+    }
+    else {
+        return <Button color="primary" radius="full" onClick={startFunc}>
             Start
         </Button>
     }
@@ -54,7 +54,6 @@ export default function Timer() {
     const [value, setValue] = useState<TimeProgress>(initTimeProgress);
     const [timerId, setTimerId] = useState<number | undefined>(undefined);
     const [focusList, updateFocusLsit] = useImmer<TimerState[]>([]);
-    const [ringColor, setRingColor] = useImmer<RingColor>(RingColor.Blue);
 
 
     const selectTimerType = (): TimerState => {
@@ -73,7 +72,6 @@ export default function Timer() {
 
 
     const startTimer = () => {
-        setRingColor(RingColor.Blue);
         const timerType = selectTimerType();
         let is_tip = true;
         const countdown = new Countdown((timeDiff) => {
@@ -85,7 +83,7 @@ export default function Timer() {
                     window.focus();
                 }
                 updateFocusLsit(draft => { draft.push(timerType) });
-                setRingColor(RingColor.Red);
+                setState(TimerState.Timeout);
             }
             is_tip = false;
 
@@ -96,9 +94,6 @@ export default function Timer() {
     };
 
 
-    const extend = () => {
-
-    }
 
     const stop = () => {
         console.log(focusList);
@@ -125,11 +120,21 @@ export default function Timer() {
         </>
     }
 
+    const color = (state: TimerState) => {
+        if (state == TimerState.Timeout) {
+            return "#F5A524"
+        } else if (state == TimerState.Breaking || state == TimerState.LongBreaking) {
+            return "#16C260"
+        } else {
+            return "#0070F0"
+        }
+    }
+
     const config = {
         size: 400,
         contentSize: 300,
         backgroundColor: "#DDD",
-        ringColor: ringColor,
+        ringColor: color(state),
         ringWidth: 15,
         progress: value.percent,
         content: format(value, state),
@@ -147,7 +152,6 @@ export default function Timer() {
                             state={state}
                             startFunc={startTimer}
                             stopFunc={stop}
-                            extendFunc={extend}
                         />
                     </div>
                 </CardFooter>
